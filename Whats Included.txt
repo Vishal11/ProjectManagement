@@ -1,0 +1,11 @@
+Back End
+REST API - Node.js/Express
+Token generation & Authentication
+CORS
+Mongoose ODM(object data mapper)
+
+Front End
+Angular 2/Angular-CLI
+
+Deployment : Gcloud 
+Url: https://meanauth-177716.appspot.com/
