@@ -60,6 +60,10 @@ const User = module.exports = mongoose.model('User',UserSchema);
         User.find({},callback);
     }
 
+    module.exports.getUserDetailsById=function(userId,callback){
+        User.findById(userId,callback);
+    }
+
     module.exports.comparePassword = function(candidatePassword,hash,callback){
 
         bcrypt.compare(candidatePassword,hash,(err,isMatch)=>{

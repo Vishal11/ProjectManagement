@@ -21,6 +21,7 @@ import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { ProjectService } from './services/project.service';
 import { UserService } from './services/user.service';
 import { Ng2TagsInputModule } from 'ng2-tagsinput';
+import { ProjectdetailComponent } from './components/projects/projectdetail/projectdetail.component';
 
 
 const appRoutes:Routes=[
@@ -39,6 +40,8 @@ const appRoutes:Routes=[
     path:'projects',component:ProjectlistComponent,canActivate:[AuthGuard]
   },{
     path:'projects/add',component:ProjectComponent,canActivate:[AuthGuard,AdminGuard]
+  },{
+    path:'projects/project-detail/:id',component:ProjectdetailComponent,canActivate:[AuthGuard]
   }
 ];
 
@@ -52,7 +55,7 @@ const appRoutes:Routes=[
     NavbarComponent,
     HomeComponent,    
     ProjectComponent, 
-    ProjectlistComponent
+    ProjectlistComponent, ProjectdetailComponent
   ],
   imports: [
     BrowserModule,

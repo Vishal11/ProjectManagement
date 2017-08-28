@@ -18,4 +18,16 @@ export class ProjectService {
     headers.append('Content-Type','application/json');
     return this.http.get('project/projects',{headers:headers}).map(res=>res.json());
   }
+
+  getProjectDetails(projectId){
+    const headers=new Headers();
+    headers.append('Content-Type','application/json');
+    return this.http.get('project/detail/'+projectId,{headers:headers}).map(res=>res.json());
+  }
+
+  updateProject(project){
+    const headers=new Headers();
+    headers.append('Content-Type','application/json');
+    return this.http.put('project/update/'+project._id,project,{headers:headers}).map(res=>res.json());
+  }
 }

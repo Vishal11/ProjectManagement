@@ -41,28 +41,64 @@ export class ProjectComponent implements OnInit {
     
   }
   onProjectSubmit(){
-    const Project={
-      name:this.name,
-      clientname:this.clientname,
-      clientcountry:this.clientcountry,
-      description:this.description,
-      userid:this.userid,
-      technologies:this.technologies
-    }  
+
+           const Project={
+              name:this.name,
+              clientname:this.clientname,
+              clientcountry:this.clientcountry,
+              description:this.description,
+              users:[],
+              technologies:this.technologies
+            }  
 
 
     if(!this.validateService.validateProjectInsert(Project)){
          this.flashService.show("Please fill out the details",{cssClass:"alert-danger"});
     }
-    else{
-      
-          this.projectService.insertProject(Project).subscribe(data=>{
-            if(data.success){
-              this.router.navigate(['/projects']);
-            }
-          })
-         this.flashService.show("Project created",{cssClass:"alert-success"});
+    else
+    {
+    if(this.userid){
+      for(let i=0;i<this.userid.length;i++){
+        let user=[]
+         
+        this.userService.getUserDetails(this.userid[i]).subscribe(data=>{
+          if(data.success){
+            delete data.user.password
+            Project.users.push(data.user)     
+          }
+
+          if(Project.users.length==this.userid.length){
+            this.projectService.insertProject(Project).subscribe(data=>{
+                if(data.success){
+                  this.router.navigate(['/projects']);
+                }
+              })
+            this.flashService.show("Project created",{cssClass:"alert-success"});      
+          }
+
+        });        
+
+      }
     }
+
+    // else{
+      
+    //       this.projectService.insertProject(Project).subscribe(data=>{
+    //         if(data.success){
+    //           this.router.navigate(['/projects']);
+    //         }
+    //       })
+    //      this.flashService.show("Project created",{cssClass:"alert-success"});
+    // }
+
+
+    }
+    console.log(Project);
+
+    
+
+
+    
   }
 
 }

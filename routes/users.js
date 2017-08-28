@@ -80,6 +80,20 @@ router.get('/users',(req,res)=>{
         }
     })
 
+});
+
+router.get('/user/:id',(req,res)=>{
+
+    User.getUserDetailsById(req.params.id,(err,user)=>{
+        if(err){
+            res.send({success:false,user:null})
+        }
+        else
+        {
+            res.send({success:true,user:user})
+        }
+    })
+
 })
 
 

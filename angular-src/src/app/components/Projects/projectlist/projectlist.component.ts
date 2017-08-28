@@ -13,8 +13,7 @@ export class ProjectlistComponent implements OnInit {
   ngOnInit() {
     this.projectService.getAllProjects().subscribe(data=>{
       if(data.success){
-        this.projects=data.projects;
-        console.log(this.projects)
+        this.projects=data.projects;       
       }     
     })
   }

@@ -14,4 +14,11 @@ export class UserService {
     return this.http.get('users/users',{headers:headers}).map(res=>res.json());
   }
 
+  getUserDetails(userId){
+    const headers = new Headers();
+    headers.append('Content-Type','application/json');
+
+    return this.http.get('users/user/'+userId,{headers:headers}).map(res=>res.json());
+  }
+
 }
