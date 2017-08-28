@@ -6,12 +6,24 @@
     <li class="list-group-item">Clientcountry: {{project.clientcountry}}</li>
     <li class="list-group-item">Description: {{project.description}}</li>
     <li class="list-group-item">Users: <div *ngFor="let user of project.users let isLast=last"> {{user.name}}{{isLast?'':','}} </div></li>
-     <li class="list-group-item" *ngIf="project.notes && project.notes != 0">Notes: <div *ngFor="let note of project.notes">{{note.name}}: {{note.note}} </div></li>
+   <li class="list-group-item" *ngIf="project.notes && project.notes != 0">Notes: <div *ngFor="let note of project.notes">{{note.name}}: {{note.note}} </div></li>
   </ul>
+  <!--<ul class="noteul" *ngIf="project.notes && project.notes != 0">
+  <li class="noteli" *ngFor="let note of project.notes">
+    <a href="#">
+      <h2>{{note.name}}</h2>
+      <p>{{note.note}}</p>
+    </a>
+  </li> 
+  </ul>-->
 </div>
-
-<div class="form-group">
-    <label>Project Description</label>
-<textarea name="note" [(ngModel)]="note" type="text" rows="5" class="form-control"></textarea>
+<div *ngIf="!project">
+  No Project found
 </div>
-<input type="button" (click)="onAddingNote()" class="btn btn-primary" value="+ Note" />
+<div *ngIf="project">
+  <div class="form-group">
+      <label>Write a Note:</label>
+  <textarea name="note" [(ngModel)]="note" type="text" rows="5" class="form-control"></textarea>
+  </div>
+  <input type="button" (click)="onAddingNote()" class="btn btn-primary" value="+ Note" />
+</div>

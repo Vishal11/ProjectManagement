@@ -63,10 +63,11 @@ router.put('/update/:id',(req,res)=>{
         description:req.body.description,
         technologies:req.body.technologies,       
         users:req.body.users,
-        notes:req.body.notes
+        notes:req.body.notes,
+        "_id":req.body._id
         
-    });
-
+    }); 
+    
     Project.updateProject(updateProject,(err,project)=>{
         if(err){
             res.send({success:false,project:null});

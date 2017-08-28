@@ -20,7 +20,8 @@ const Project = new mongoose.Schema({
     notes:[{
         note:{type:String},
         name:{type:String},
-        userId:{type:String}
+        userId:{type:String},
+        atTime:{type:Date,default:Date.now}
     }]
 });
 
@@ -38,6 +39,6 @@ module.exports.getProjectById=function(projectId,callback)
 }
 
 
-module.exports.updateProject=function(objProject,callback){       
-    project.findOneAndUpdate({"name":objProject.name},{$set:{"notes":objProject.notes}}, {upsert: true,new:true},callback);
+module.exports.updateProject=function(objProject,callback){   
+    project.findOneAndUpdate({"_id":objProject._id},{$set:{"notes":objProject.notes}}, {upsert: true,new:true},callback);
 }

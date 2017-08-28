@@ -32,7 +32,10 @@ export class ProjectComponent implements OnInit {
   ngOnInit() {
     this.userService.getUsers().subscribe(data=>{
       if(data.success){
-        this.users=data.users;
+        this.users=data.users.filter(function(itm){
+            return !itm.isAdmin
+        });
+        
         console.log(this.users);
       }
     })

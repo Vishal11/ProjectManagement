@@ -613,7 +613,9 @@ var ProjectComponent = (function () {
         var _this = this;
         this.userService.getUsers().subscribe(function (data) {
             if (data.success) {
-                _this.users = data.users;
+                _this.users = data.users.filter(function (itm) {
+                    return !itm.isAdmin;
+                });
                 console.log(_this.users);
             }
         });
@@ -704,8 +706,8 @@ var ProjectdetailComponent = (function () {
             note.name = loggedInUser.name;
             note.userId = loggedInUser.id;
             this.project.notes.push(note);
-            console.log(this.project);
             this.note = null;
+            console.log("ang" + this.project._id);
             this.projectService.updateProject(this.project).subscribe(function (data) {
                 if (data.success) {
                     _this.project = data.project;
@@ -720,7 +722,15 @@ var ProjectdetailComponent = (function () {
         var projectId = this.activatedRoute.snapshot.params["id"];
         this.projectService.getProjectDetails(projectId).subscribe(function (data) {
             if (data.success) {
-                _this.project = data.project;
+                console.log("sdf");
+                if (data.project) {
+                    for (var i = 0; i < data.project.users.length; i++) {
+                        if (data.project.users[i]._id == JSON.parse(localStorage.getItem('user')).id) {
+                            _this.project = data.project;
+                            break;
+                        }
+                    }
+                }
             }
         });
     };
@@ -760,12 +770,25 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var ProjectlistComponent = (function () {
     function ProjectlistComponent(projectService) {
         this.projectService = projectService;
+        this.projects = [];
     }
     ProjectlistComponent.prototype.ngOnInit = function () {
         var _this = this;
         this.projectService.getAllProjects().subscribe(function (data) {
             if (data.success) {
-                _this.projects = data.projects;
+                // console.log("sdf");
+                // this.projects=data.projects.filter(function(elm){
+                // return  elm.users.filter(function(el){
+                //    return  (el._id==JSON.parse(localStorage.getItem('user')).id);
+                //   })
+                // }); 
+                for (var i = 0; i < data.projects.length; i++) {
+                    for (var j = 0; j < data.projects[i].users.length; j++) {
+                        if (JSON.parse(localStorage.getItem('user')).isAdmin || data.projects[i].users[j]._id == JSON.parse(localStorage.getItem('user')).id) {
+                            _this.projects.push(data.projects[i]);
+                        }
+                    }
+                }
             }
         });
     };
@@ -1101,7 +1124,7 @@ module.exports = ""
 /***/ 694:
 /***/ (function(module, exports) {
 
-module.exports = ""
+module.exports = "\r\n.noteUl .noteli{\r\n  list-style:none;\r\n}\r\nnoteul{\r\n  overflow:hidden;\r\n  padding:3em;\r\n}\r\n.noteul .noteli a{\r\n  text-decoration:none;\r\n  color:#000;\r\n  background:#ffc;\r\n  display:block;\r\n  height:10em;\r\n  width:10em;\r\n  padding:1em;\r\n}\r\n.noteul .noteli{\r\n  margin:1em;\r\n  float:left;\r\n}"
 
 /***/ }),
 
@@ -1136,7 +1159,7 @@ module.exports = "<p>\n  dashboard works!\n</p>\n"
 /***/ 699:
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"jumbotron text-center\">\n  <h1>MEAN Authentication App</h1>\n  <p class=\"lead\">Welcome to our custom MEAN authentication application built from scratch</p>\n  <div>\n    <a class=\"btn btn-primary\" [routerLink]=\"['/register']\">Register</a> <a class=\"btn btn-default\" [routerLink]=\"['/login']\">Login</a>\n  </div>\n</div>\n\n<div class=\"row\">\n  <div class=\"col-md-4\">\n    <h3>Express Backend</h3>\n    <p>A rock solid Node.js/Express server using Mongoose to organize models and query the database</p>\n  </div>\n  <div class=\"col-md-4\">\n    <h3>Angular-CLI</h3>\n    <p>Angular-CLI to generate components, services and more. Local dev server and easy compilation</p>\n  </div>\n  <div class=\"col-md-4\">\n    <h3>JWT Tokens</h3>\n    <p>Full featured authentication using JSON web tokens. Login and store user data</p>\n  </div>\n</div>\n"
+module.exports = "<div class=\"jumbotron text-center\">\n  <h1>NeuCAMP Project Management</h1>\n  <p class=\"lead\">Now manage your work and monitor it too.</p>\n  <div>\n    <a class=\"btn btn-primary\" [routerLink]=\"['/register']\">Register</a> <a class=\"btn btn-default\" [routerLink]=\"['/login']\">Login</a>\n  </div>\n</div>\n\n<div class=\"row\">\n  <div class=\"col-md-4\">\n    <h3>Task Asign</h3>\n    <p>A rock solid Node.js/Express server using Mongoose to organize models and query the database</p>\n  </div>\n  <div class=\"col-md-4\">\n    <h3>Monitor Work</h3>\n    <p>Angular-CLI to generate components, services and more. Local dev server and easy compilation</p>\n  </div>\n  <div class=\"col-md-4\">\n    <h3>Recognition</h3>\n    <p>Full featured authentication using JSON web tokens. Login and store user data</p>\n  </div>\n</div>\n"
 
 /***/ }),
 
@@ -1171,7 +1194,7 @@ module.exports = "<h2>{{title}}</h2>\n<form (submit)=\"onProjectSubmit()\">\n  <
 /***/ 704:
 /***/ (function(module, exports) {
 
-module.exports = "<div *ngIf=\"project\">\n  <h2 class=\"page-header\">{{project.name}}</h2>\n  <ul class=\"list-group\">\n    <li class=\"list-group-item\">Projectname: {{project.name}}</li>\n    <li class=\"list-group-item\">Clientname: {{project.clientname}}</li>\n    <li class=\"list-group-item\">Clientcountry: {{project.clientcountry}}</li>\n    <li class=\"list-group-item\">Description: {{project.description}}</li>\n    <li class=\"list-group-item\">Users: <div *ngFor=\"let user of project.users let isLast=last\"> {{user.name}}{{isLast?'':','}} </div></li>\n     <li class=\"list-group-item\" *ngIf=\"project.notes && project.notes != 0\">Notes: <div *ngFor=\"let note of project.notes\">{{note.name}}: {{note.note}} </div></li>\n  </ul>\n</div>\n\n<div class=\"form-group\">\n    <label>Project Description</label>\n<textarea name=\"note\" [(ngModel)]=\"note\" type=\"text\" rows=\"5\" class=\"form-control\"></textarea>\n</div>\n<input type=\"button\" (click)=\"onAddingNote()\" class=\"btn btn-primary\" value=\"+ Note\" />"
+module.exports = "<div *ngIf=\"project\">\n  <h2 class=\"page-header\">{{project.name}}</h2>\n  <ul class=\"list-group\">\n    <li class=\"list-group-item\">Projectname: {{project.name}}</li>\n    <li class=\"list-group-item\">Clientname: {{project.clientname}}</li>\n    <li class=\"list-group-item\">Clientcountry: {{project.clientcountry}}</li>\n    <li class=\"list-group-item\">Description: {{project.description}}</li>\n    <li class=\"list-group-item\">Users: <div *ngFor=\"let user of project.users let isLast=last\"> {{user.name}}{{isLast?'':','}} </div></li>\n   <li class=\"list-group-item\" *ngIf=\"project.notes && project.notes != 0\">Notes: <div *ngFor=\"let note of project.notes\">{{note.name}}: {{note.note}} </div></li>\n  </ul>\n  <!--<ul class=\"noteul\" *ngIf=\"project.notes && project.notes != 0\">\n  <li class=\"noteli\" *ngFor=\"let note of project.notes\">\n    <a href=\"#\">\n      <h2>{{note.name}}</h2>\n      <p>{{note.note}}</p>\n    </a>\n  </li> \n  </ul>-->\n</div>\n<div *ngIf=\"!project\">\n  No Project found\n</div>\n<div *ngIf=\"project\">\n  <div class=\"form-group\">\n      <label>Write a Note:</label>\n  <textarea name=\"note\" [(ngModel)]=\"note\" type=\"text\" rows=\"5\" class=\"form-control\"></textarea>\n  </div>\n  <input type=\"button\" (click)=\"onAddingNote()\" class=\"btn btn-primary\" value=\"+ Note\" />\n</div>"
 
 /***/ }),
 

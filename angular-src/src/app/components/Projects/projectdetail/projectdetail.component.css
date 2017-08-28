@@ -1,0 +1,21 @@
+
+.noteUl .noteli{
+  list-style:none;
+}
+noteul{
+  overflow:hidden;
+  padding:3em;
+}
+.noteul .noteli a{
+  text-decoration:none;
+  color:#000;
+  background:#ffc;
+  display:block;
+  height:10em;
+  width:10em;
+  padding:1em;
+}
+.noteul .noteli{
+  margin:1em;
+  float:left;
+}
