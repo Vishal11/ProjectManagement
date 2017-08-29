@@ -42,3 +42,7 @@ module.exports.getProjectById=function(projectId,callback)
 module.exports.updateProject=function(objProject,callback){   
     project.findOneAndUpdate({"_id":objProject._id},{$set:{"notes":objProject.notes}}, {upsert: true,new:true},callback);
 }
+
+module.exports.deleteProjectNote=function(projectId,noteId,callback){
+    project.findByIdAndUpdate(projectId,{$pull:{notes:{_id:noteId}}},callback);
+}

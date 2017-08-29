@@ -42,6 +42,11 @@ var ProjectService = (function () {
         headers.append('Content-Type', 'application/json');
         return this.http.put('project/update/' + project._id, project, { headers: headers }).map(function (res) { return res.json(); });
     };
+    ProjectService.prototype.deleteProjectNote = function (projectId, noteId) {
+        var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["Headers"]();
+        headers.append('Content-Type', 'application/json');
+        return this.http.delete('project/note/delete/' + projectId + "/" + noteId, { headers: headers }).map(function (res) { return res.json(); });
+    };
     ProjectService = __decorate([
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])(), 
         __metadata('design:paramtypes', [(typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__angular_http__["Http"] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_1__angular_http__["Http"]) === 'function' && _a) || Object])
@@ -234,14 +239,14 @@ var AppComponent = (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__components_navbar_navbar_component__ = __webpack_require__(515);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__components_home_home_component__ = __webpack_require__(513);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__services_validate_service__ = __webpack_require__(224);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__services_auth_service__ = __webpack_require__(67);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__services_auth_service__ = __webpack_require__(55);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_14_angular2_flash_messages__ = __webpack_require__(109);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_14_angular2_flash_messages___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_14_angular2_flash_messages__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__guards_auth_guard__ = __webpack_require__(522);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__guards_admin_guard__ = __webpack_require__(521);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__components_projects_project_project_component__ = __webpack_require__(517);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__components_projects_projectlist_projectlist_component__ = __webpack_require__(519);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__angular_common__ = __webpack_require__(59);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__angular_common__ = __webpack_require__(60);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__services_project_service__ = __webpack_require__(156);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__services_user_service__ = __webpack_require__(337);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_22_ng2_tagsinput__ = __webpack_require__(685);
@@ -413,7 +418,7 @@ var HomeComponent = (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_angular2_flash_messages__ = __webpack_require__(109);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_angular2_flash_messages___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_angular2_flash_messages__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_auth_service__ = __webpack_require__(67);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_auth_service__ = __webpack_require__(55);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_router__ = __webpack_require__(40);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return LoginComponent; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -477,7 +482,7 @@ var LoginComponent = (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_angular2_flash_messages__ = __webpack_require__(109);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_angular2_flash_messages___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_angular2_flash_messages__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_auth_service__ = __webpack_require__(67);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_auth_service__ = __webpack_require__(55);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_router__ = __webpack_require__(40);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return NavbarComponent; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -527,7 +532,7 @@ var NavbarComponent = (function () {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_auth_service__ = __webpack_require__(67);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_auth_service__ = __webpack_require__(55);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_router__ = __webpack_require__(40);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ProfileComponent; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -679,7 +684,8 @@ var ProjectComponent = (function () {
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_project_service__ = __webpack_require__(156);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_router__ = __webpack_require__(40);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_auth_service__ = __webpack_require__(55);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_router__ = __webpack_require__(40);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ProjectdetailComponent; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -693,11 +699,87 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
 var ProjectdetailComponent = (function () {
-    function ProjectdetailComponent(projectService, activatedRoute) {
+    function ProjectdetailComponent(authService, projectService, activatedRoute) {
+        this.authService = authService;
         this.projectService = projectService;
         this.activatedRoute = activatedRoute;
         this.note = null;
+        this.editNote = null;
+        this.checkToManageButtons = function (data) {
+            for (var i = 0; i < data.project.users.length; i++) {
+                if (this.authService.isUserAdmin() || data.project.users[i]._id == JSON.parse(localStorage.getItem('user')).id) {
+                    this.project = data.project;
+                    for (var j = 0; j < data.project.notes.length; j++) {
+                        data.project.notes[j].showEditUpdateButton = false;
+                        data.project.notes[j].editMode = false;
+                        data.project.notes[j].editNote = data.project.notes[j].note;
+                        if (this.authService.isUserAdmin() || data.project.notes[j].userId == JSON.parse(localStorage.getItem('user')).id) {
+                            data.project.notes[j].showEditUpdateButton = true;
+                        }
+                    }
+                    break;
+                }
+            }
+        };
+        this.onNoteEditClick = function (noteId) {
+            var selectedNote = this.project.notes.filter(function (elm) {
+                return elm._id == noteId;
+            });
+            if (selectedNote)
+                selectedNote[0].editMode = true;
+            selectedNote[0].editNote = selectedNote[0].note;
+            return false;
+        };
+        this.onNoteDeleteClick = function (noteId) {
+            var _this = this;
+            if (confirm("Are you sure you want to delete this note?")) {
+                var projectId = this.activatedRoute.snapshot.params["id"];
+                this.projectService.deleteProjectNote(projectId, noteId).subscribe(function (data) {
+                    if (data.success) {
+                        console.log("sdf");
+                        var notes = _this.project.notes;
+                        _this.project.notes = [];
+                        for (var i = 0; i < notes.length; i++) {
+                            if (notes[i]._id != noteId) {
+                                _this.project.notes.push(notes[i]);
+                            }
+                        }
+                    }
+                });
+            }
+            else {
+            }
+            return false;
+        };
+        this.onNoteEditUpdateClick = function (noteId) {
+            //  let selectedNote = this.project.notes.filter(function(elm){
+            //     return elm._id==noteId
+            //   });
+            var _this = this;
+            // Update the Note
+            for (var i = 0; i < this.project.notes.length; i++) {
+                if (this.project.notes[i]._id == noteId) {
+                    this.project.notes[i].note = this.project.notes[i].editNote;
+                }
+            }
+            this.projectService.updateProject(this.project).subscribe(function (data) {
+                if (data.success) {
+                    _this.project = data.project;
+                    _this.checkToManageButtons(data);
+                }
+            });
+            return false;
+        };
+        this.onNoteEditCancelClick = function (noteId) {
+            var selectedNote = this.project.notes.filter(function (elm) {
+                return elm._id == noteId;
+            });
+            if (selectedNote)
+                selectedNote[0].editMode = false;
+            return false;
+        };
         this.onAddingNote = function () {
             var _this = this;
             var note = { note: "", name: "", userId: "" };
@@ -707,10 +789,10 @@ var ProjectdetailComponent = (function () {
             note.userId = loggedInUser.id;
             this.project.notes.push(note);
             this.note = null;
-            console.log("ang" + this.project._id);
             this.projectService.updateProject(this.project).subscribe(function (data) {
                 if (data.success) {
                     _this.project = data.project;
+                    _this.checkToManageButtons(data);
                 }
             });
             return false;
@@ -722,14 +804,8 @@ var ProjectdetailComponent = (function () {
         var projectId = this.activatedRoute.snapshot.params["id"];
         this.projectService.getProjectDetails(projectId).subscribe(function (data) {
             if (data.success) {
-                console.log("sdf");
                 if (data.project) {
-                    for (var i = 0; i < data.project.users.length; i++) {
-                        if (data.project.users[i]._id == JSON.parse(localStorage.getItem('user')).id) {
-                            _this.project = data.project;
-                            break;
-                        }
-                    }
+                    _this.checkToManageButtons(data);
                 }
             }
         });
@@ -740,10 +816,10 @@ var ProjectdetailComponent = (function () {
             template: __webpack_require__(704),
             styles: [__webpack_require__(694)]
         }), 
-        __metadata('design:paramtypes', [(typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__services_project_service__["a" /* ProjectService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_1__services_project_service__["a" /* ProjectService */]) === 'function' && _a) || Object, (typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__angular_router__["c" /* ActivatedRoute */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_2__angular_router__["c" /* ActivatedRoute */]) === 'function' && _b) || Object])
+        __metadata('design:paramtypes', [(typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_2__services_auth_service__["a" /* AuthService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_2__services_auth_service__["a" /* AuthService */]) === 'function' && _a) || Object, (typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1__services_project_service__["a" /* ProjectService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_1__services_project_service__["a" /* ProjectService */]) === 'function' && _b) || Object, (typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_3__angular_router__["c" /* ActivatedRoute */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_3__angular_router__["c" /* ActivatedRoute */]) === 'function' && _c) || Object])
     ], ProjectdetailComponent);
     return ProjectdetailComponent;
-    var _a, _b;
+    var _a, _b, _c;
 }());
 //# sourceMappingURL=D:/Sessions/ProjectManagement/angular-src/src/projectdetail.component.js.map
 
@@ -815,7 +891,7 @@ var ProjectlistComponent = (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_validate_service__ = __webpack_require__(224);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_angular2_flash_messages__ = __webpack_require__(109);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_angular2_flash_messages___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_angular2_flash_messages__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_auth_service__ = __webpack_require__(67);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_auth_service__ = __webpack_require__(55);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_router__ = __webpack_require__(40);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return RegisterComponent; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -890,7 +966,7 @@ var RegisterComponent = (function () {
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__(40);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_auth_service__ = __webpack_require__(67);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_auth_service__ = __webpack_require__(55);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AdminGuard; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -934,7 +1010,7 @@ var AdminGuard = (function () {
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__(40);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_auth_service__ = __webpack_require__(67);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_auth_service__ = __webpack_require__(55);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AuthGuard; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -988,7 +1064,7 @@ var environment = {
 
 /***/ }),
 
-/***/ 67:
+/***/ 55:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1194,7 +1270,7 @@ module.exports = "<h2>{{title}}</h2>\n<form (submit)=\"onProjectSubmit()\">\n  <
 /***/ 704:
 /***/ (function(module, exports) {
 
-module.exports = "<div *ngIf=\"project\">\n  <h2 class=\"page-header\">{{project.name}}</h2>\n  <ul class=\"list-group\">\n    <li class=\"list-group-item\">Projectname: {{project.name}}</li>\n    <li class=\"list-group-item\">Clientname: {{project.clientname}}</li>\n    <li class=\"list-group-item\">Clientcountry: {{project.clientcountry}}</li>\n    <li class=\"list-group-item\">Description: {{project.description}}</li>\n    <li class=\"list-group-item\">Users: <div *ngFor=\"let user of project.users let isLast=last\"> {{user.name}}{{isLast?'':','}} </div></li>\n   <li class=\"list-group-item\" *ngIf=\"project.notes && project.notes != 0\">Notes: <div *ngFor=\"let note of project.notes\">{{note.name}}: {{note.note}} </div></li>\n  </ul>\n  <!--<ul class=\"noteul\" *ngIf=\"project.notes && project.notes != 0\">\n  <li class=\"noteli\" *ngFor=\"let note of project.notes\">\n    <a href=\"#\">\n      <h2>{{note.name}}</h2>\n      <p>{{note.note}}</p>\n    </a>\n  </li> \n  </ul>-->\n</div>\n<div *ngIf=\"!project\">\n  No Project found\n</div>\n<div *ngIf=\"project\">\n  <div class=\"form-group\">\n      <label>Write a Note:</label>\n  <textarea name=\"note\" [(ngModel)]=\"note\" type=\"text\" rows=\"5\" class=\"form-control\"></textarea>\n  </div>\n  <input type=\"button\" (click)=\"onAddingNote()\" class=\"btn btn-primary\" value=\"+ Note\" />\n</div>"
+module.exports = "<div *ngIf=\"project\">\n  <h2 class=\"page-header\">{{project.name}}</h2>\n  <ul class=\"list-group\">\n    <li class=\"list-group-item\">Projectname: {{project.name}}</li>\n    <li class=\"list-group-item\">Clientname: {{project.clientname}}</li>\n    <li class=\"list-group-item\">Clientcountry: {{project.clientcountry}}</li>\n    <li class=\"list-group-item\">Description: {{project.description}}</li>\n    <li class=\"list-group-item\">Users: <div *ngFor=\"let user of project.users let isLast=last\"> {{user.name}}{{isLast?'':','}} </div></li>\n   <li class=\"list-group-item\" *ngIf=\"project.notes && project.notes != 0\">Notes: \n     <div *ngFor=\"let note of project.notes\"><div *ngIf=\"!note.editMode\"> <b>{{note.name}}</b>: {{note.note}}  </div>      \n      <textarea *ngIf=\"note.editMode\" name=\"note\" [(ngModel)]=\"note.editNote\" type=\"text\" rows=\"5\" class=\"form-control\"></textarea>\n     <a href=\"#\" *ngIf=\"!note.editMode && note.showEditUpdateButton\" (click)=\"onNoteEditClick(note._id)\">Edit</a>\n     <a href=\"#\" *ngIf=\"note.editMode && note.showEditUpdateButton\" (click)=\"onNoteEditUpdateClick(note._id)\">Update</a>\n     <a href=\"#\" *ngIf=\"note.editMode && note.showEditUpdateButton\" (click)=\"onNoteEditCancelClick(note._id)\">Cancel</a>\n     <a href=\"#\" *ngIf=\"!note.editMode && note.showEditUpdateButton\" (click)=\"onNoteDeleteClick(note._id)\">Delete</a></div>  \n   </li>\n  </ul>\n  <!--<ul class=\"noteul\" *ngIf=\"project.notes && project.notes != 0\">\n  <li class=\"noteli\" *ngFor=\"let note of project.notes\">\n    <a href=\"#\">\n      <h2>{{note.name}}</h2>\n      <p>{{note.note}}</p>\n    </a>\n  </li> \n  </ul>-->\n</div>\n<div *ngIf=\"!project\">\n  No Project found\n</div>\n<div *ngIf=\"project\">\n  <div class=\"form-group\">\n      <label>Write a Note:</label>\n  <textarea name=\"note\" [(ngModel)]=\"note\" type=\"text\" rows=\"5\" class=\"form-control\"></textarea>\n  </div>\n  <input type=\"button\" (click)=\"onAddingNote()\" class=\"btn btn-primary\" value=\"+ Note\" />\n</div>"
 
 /***/ }),
 

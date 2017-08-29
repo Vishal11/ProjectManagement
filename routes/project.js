@@ -55,6 +55,23 @@ router.get('/detail/:id',(req,res)=>{
    }) 
 });
 
+router.delete('/note/delete/:projectid/:noteId',(req,res)=>{
+
+    var projectId=req.params.projectid;
+    var noteId=req.params.noteId;
+    Project.deleteProjectNote(projectId,noteId,(err,project)=>{
+        if(err)
+        {                   
+            res.send({success:false,project:null});
+        }
+        else
+        {
+            res.send({success:true,project:project});
+        }
+    })
+
+})
+
 router.put('/update/:id',(req,res)=>{
     let updateProject = new Project({
         name:req.body.name,
@@ -80,6 +97,9 @@ router.put('/update/:id',(req,res)=>{
     })
 
 })
+
+
+
 
 
 module.exports=router;

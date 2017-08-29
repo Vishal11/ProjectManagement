@@ -6,7 +6,14 @@
     <li class="list-group-item">Clientcountry: {{project.clientcountry}}</li>
     <li class="list-group-item">Description: {{project.description}}</li>
     <li class="list-group-item">Users: <div *ngFor="let user of project.users let isLast=last"> {{user.name}}{{isLast?'':','}} </div></li>
-   <li class="list-group-item" *ngIf="project.notes && project.notes != 0">Notes: <div *ngFor="let note of project.notes">{{note.name}}: {{note.note}} </div></li>
+   <li class="list-group-item" *ngIf="project.notes && project.notes != 0">Notes: 
+     <div *ngFor="let note of project.notes"><div *ngIf="!note.editMode"> <b>{{note.name}}</b>: {{note.note}}  </div>      
+      <textarea *ngIf="note.editMode" name="note" [(ngModel)]="note.editNote" type="text" rows="5" class="form-control"></textarea>
+     <a href="#" *ngIf="!note.editMode && note.showEditUpdateButton" (click)="onNoteEditClick(note._id)">Edit</a>
+     <a href="#" *ngIf="note.editMode && note.showEditUpdateButton" (click)="onNoteEditUpdateClick(note._id)">Update</a>
+     <a href="#" *ngIf="note.editMode && note.showEditUpdateButton" (click)="onNoteEditCancelClick(note._id)">Cancel</a>
+     <a href="#" *ngIf="!note.editMode && note.showEditUpdateButton" (click)="onNoteDeleteClick(note._id)">Delete</a></div>  
+   </li>
   </ul>
   <!--<ul class="noteul" *ngIf="project.notes && project.notes != 0">
   <li class="noteli" *ngFor="let note of project.notes">

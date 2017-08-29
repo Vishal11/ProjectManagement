@@ -30,4 +30,10 @@ export class ProjectService {
     headers.append('Content-Type','application/json');
     return this.http.put('project/update/'+project._id,project,{headers:headers}).map(res=>res.json());
   }
+
+  deleteProjectNote(projectId,noteId){
+    const headers=new Headers();
+    headers.append('Content-Type','application/json');
+    return this.http.delete('project/note/delete/'+projectId+"/"+noteId,{headers:headers}).map(res=>res.json());
+  }
 }
