@@ -2,11 +2,15 @@ import { Component, OnInit } from '@angular/core';
 import { ProjectService } from '../../../services/project.service'
 import { AuthService } from '../../../services/auth.service'
 import {Router, ActivatedRoute, Params} from '@angular/router';
+//import "../../../../assets/global/plugins/jquery.min.js"
+// import "../../../../assets/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js"
+// import "../../../../assets/global/scripts/app.js"
 
 @Component({
   selector: 'app-projectdetail',
   templateUrl: './projectdetail.component.html',
-  styleUrls: ['./projectdetail.component.css']
+  styleUrls: ['./projectdetail.component.css'],
+
 })
 export class ProjectdetailComponent implements OnInit {
 
@@ -28,6 +32,20 @@ export class ProjectdetailComponent implements OnInit {
      }
    })
   }
+  
+  // ngAfterViewChecked(){
+    
+  //   this.loadScript("../../../../assets/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js")
+  //   this.loadScript("../../../../assets/global/scripts/app.js")
+  // }
+
+//   public loadScript(url) {
+//     console.log('preparing to load...')
+//     let node = document.createElement('script');
+//     node.src = url;
+//     node.type = 'text/javascript';
+//     document.getElementsByTagName('head')[0].appendChild(node);
+//  }
 
   checkToManageButtons=function(data){
       for(let i=0;i<data.project.users.length;i++)

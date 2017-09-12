@@ -35,10 +35,8 @@
                 </div>
             </div>
             <div class="portlet-body">
-                <div class="scroller" *ngIf="!note.editMode" style="height:200px" data-rail-visible="1" data-rail-color="yellow" data-handle-color="#a1b2bd">
-
-                {{note.note}}
-                
+                <div class="scroller" *ngIf="!note.editMode" style="height:200px" data-rail-visible="1" data-rail-color="yellow" data-handle-color="#a1b2bd" style="overflow-y: auto;word-wrap:break-word; height:200px;">              
+                {{note.note}}                
                 </div>
                 <textarea *ngIf="note.editMode" name="note" [(ngModel)]="note.editNote" type="text" rows="5" class="form-control"></textarea>
             </div>
@@ -67,3 +65,5 @@
       </div>
     </div>
 </div>
+
+
