@@ -13,9 +13,9 @@ const Project = new mongoose.Schema({
     description:{
         type:String
     },
-    technologies:{
+    technologies:[{
         type:String
-    },
+    }],
     users:[User.schema],
     notes:[{
         note:{type:String},
@@ -40,9 +40,15 @@ module.exports.getProjectById=function(projectId,callback)
 
 
 module.exports.updateProject=function(objProject,callback){   
-    project.findOneAndUpdate({"_id":objProject._id},{$set:{"notes":objProject.notes}}, {upsert: true,new:true},callback);
+    console.log(objProject);
+    project.findOneAndUpdate({"_id":objProject._id},{$set:{"name":objProject.name,"clientname":objProject.clientname,"clientcountry":objProject.clientcountry,
+    "description":objProject.description,"technologies":objProject.technologies,"users":objProject.users,"notes":objProject.notes}}, {upsert: true,new:true},callback);
 }
 
 module.exports.deleteProjectNote=function(projectId,noteId,callback){
     project.findByIdAndUpdate(projectId,{$pull:{notes:{_id:noteId}}},callback);
+}
+
+module.exports.deleteProject=function(projectId,callback){
+    project.findByIdAndRemove(projectId,callback);
 }

@@ -18,7 +18,9 @@
       "tsconfig": "tsconfig.json",
       "prefix": "app",
       "styles": [
-        "styles.css"
+        "styles.css",
+        "./assets/global/plugins/font-awesome/css/font-awesome.min.css",
+        "./assets/global/plugins/simple-line-icons/simple-line-icons.min.css"
       ],
       "scripts": [],
       "environments": {

@@ -57,5 +57,11 @@ export class RegisterComponent implements OnInit {
     });
 
   }
+  OnCancelFormClick=function(){
+    this.name="";
+    this.email="";
+    this.password="";
+    this.username="";
+  }
 
 }

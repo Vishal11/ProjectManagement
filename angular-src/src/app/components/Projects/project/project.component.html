@@ -1,16 +1,25 @@
-<h2>{{title}}</h2>
-<form (submit)="onProjectSubmit()">
-  <div class="form-group">
-    <label>Name</label>
-    <input type="text" name="name" [(ngModel)]="name" class="form-control"/>
-  </div>
+<div class="row">
+    <div class="col-md-12">
+      <div class="portlet light bordered">
+        <div class="portlet-title">
+            <div class="caption font-red-sunglo">
+                <i class="icon-settings font-red-sunglo"></i>
+                <span class="caption-subject bold uppercase"> {{title}}</span>
+            </div>
+        </div>
+  <div class="portlet-body form">
+  <form role="form" (submit)="onProjectSubmit()">
+      <div class="form-body">
+          <flash-messages></flash-messages>
+          <div class="form-group form-md-line-input">   
+            <input type="text" placeholder="Name" name="name" [(ngModel)]="name" class="form-control"/>
+          </div>
 
-  <div class="form-group">
-    <label>Client Name</label>
-    <input type="text" name="clientname" [(ngModel)]="clientname" class="form-control"/>
-  </div>
+          <div class="form-group form-md-line-input">   
+            <input type="text" placeholder="Client Name" name="clientname" [(ngModel)]="clientname" class="form-control"/>
+          </div>
 
-  <div class="form-group">
+  <div class="form-group form-md-line-input">
     <label>Client Country</label>
     <select name="clientcountry" [(ngModel)]="clientcountry" id="sel1" class="form-control">
       <option value="AF">Afghanistan</option>
@@ -263,29 +272,36 @@
    </select>
   </div>
 
-  <div class="form-group">
-    <label>Project Description</label>
-    <textarea type="text" rows="5" name="description" [(ngModel)]="description" class="form-control"></textarea>
+  <div class="form-group form-md-line-input">   
+    <textarea type="text" placeholder="Project Description" rows="5" name="description" [(ngModel)]="description" class="form-control"></textarea>
   </div>
 
-  <div class="form-group">
-    <label>Users Assigned</label>
-    <select name="userid" [(ngModel)]="userid" multiple>
+  <div class="form-group form-md-line-input">
+    <!-- <label>Users Assigned</label> -->
+    <!-- <select name="userid" [(ngModel)]="userid" multiple>
       <option *ngFor="let user of users" value="{{user._id}}">{{user.name}}</option>
-    </select>
+    </select> -->
+    <angular2-multiselect [data]="usersList" name="selectedUsers" placeholder="Users"  [(ngModel)]="selectedUsers" [settings]="dropdownSettings" 
+    
+    ></angular2-multiselect>
   </div>
+  
 
-  <div class="form-group">
-    <label>Technologies</label>
-    <!--<input type="text" data-role="tagsinput" name="technologies" [(ngModel)]="technologies" class="form-control tech"/>-->
-    <tag-input
+  <div class="form-group form-md-line-input">
+   
+    <!-- <input type="text" data-role="tagsinput" name="technologies" [(ngModel)]="technologies" class="form-control tech"/> -->
+    <!-- <tag-input
     name="technologies" 
-    [model]="technologies"    
+    [(model)]="technologies"    
     placeholder="Add tags ..." class="form-control">
-    </tag-input>
+    </tag-input> -->
+    <rl-tag-input name="technologies" [(ngModel)]="technologies" placeholder="Add Technologies"></rl-tag-input>
   </div>
-
-  <input type="submit" class="btn btn-primary" value="Submit" />
+  <div class="form-actions noborder">
+    <input type="submit" class="btn blue" value="Submit" />
+    <input type="button" (click)="onProjectCancelClick()" class="btn default" value="Cancel" />
+  </div>
+</div>
 </form>
 
 

@@ -1,28 +1,58 @@
-<div *ngIf="project">
-  <h2 class="page-header">{{project.name}}</h2>
+<div class="row">
+    <div class="col-md-12">
+      <div class="portlet light bordered">
+        <div class="portlet-title">
+            <div class="caption font-red-sunglo">
+                <i class="icon-settings font-red-sunglo"></i>
+                <span class="caption-subject bold uppercase" *ngIf="project"> Detail: {{project.name}}</span>
+            </div>
+        </div>
+<div class="portlet-body" *ngIf="project">
+  <!-- <h2 class="page-header">{{project.name}}</h2> -->
   <ul class="list-group">
-    <li class="list-group-item">Projectname: {{project.name}}</li>
+    <!-- <li class="list-group-item">Projectname: {{project.name}}</li> -->
     <li class="list-group-item">Clientname: {{project.clientname}}</li>
     <li class="list-group-item">Clientcountry: {{project.clientcountry}}</li>
     <li class="list-group-item">Description: {{project.description}}</li>
     <li class="list-group-item">Users: <div *ngFor="let user of project.users let isLast=last"> {{user.name}}{{isLast?'':','}} </div></li>
+    <li class="list-group-item">Technologies: <div *ngFor="let tech of project.technologies let isLast=last"> {{tech}}{{isLast?'':','}} </div></li>
    <li class="list-group-item" *ngIf="project.notes && project.notes != 0">Notes: 
-     <div *ngFor="let note of project.notes"><div *ngIf="!note.editMode"> <b>{{note.name}}</b>: {{note.note}}  </div>      
+     <div class="row">
+       <div class="col-md-4"  *ngFor="let note of project.notes">
+         <div class="portlet box blue-hoki">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-gift"></i>{{note.name}} </div>
+                <div class="actions">
+                    <a href="javascript:;" *ngIf="!note.editMode && note.showEditUpdateButton" (click)="onNoteEditClick(note._id)" class="btn btn-default btn-sm">
+                        <i class="fa fa-pencil"></i> Edit </a>
+                    <a href="javascript:;" *ngIf="note.editMode && note.showEditUpdateButton" (click)="onNoteEditUpdateClick(note._id)" class="btn btn-default btn-sm">
+                            <i class="fa fa-pencil"></i> Update </a>
+                    <a href="javascript:;" *ngIf="note.editMode && note.showEditUpdateButton" (click)="onNoteEditCancelClick(note._id)" class="btn btn-default btn-sm">
+                                <i class="fa fa-pencil"></i> Cancel </a>
+                    <a href="javascript:;" *ngIf="!note.editMode && note.showEditUpdateButton" (click)="onNoteDeleteClick(note._id)" class="btn btn-default btn-sm">
+                        <i class="fa fa-plus"></i> Delete </a>
+                </div>
+            </div>
+            <div class="portlet-body">
+                <div class="scroller" *ngIf="!note.editMode" style="height:200px" data-rail-visible="1" data-rail-color="yellow" data-handle-color="#a1b2bd">
+
+                {{note.note}}
+                
+                </div>
+                <textarea *ngIf="note.editMode" name="note" [(ngModel)]="note.editNote" type="text" rows="5" class="form-control"></textarea>
+            </div>
+         </div>
+       </div>
+     </div>
+     <!-- <div *ngFor="let note of project.notes"><div *ngIf="!note.editMode"> <b>{{note.name}}</b>: {{note.note}}  </div>      
       <textarea *ngIf="note.editMode" name="note" [(ngModel)]="note.editNote" type="text" rows="5" class="form-control"></textarea>
      <a href="#" *ngIf="!note.editMode && note.showEditUpdateButton" (click)="onNoteEditClick(note._id)">Edit</a>
      <a href="#" *ngIf="note.editMode && note.showEditUpdateButton" (click)="onNoteEditUpdateClick(note._id)">Update</a>
      <a href="#" *ngIf="note.editMode && note.showEditUpdateButton" (click)="onNoteEditCancelClick(note._id)">Cancel</a>
-     <a href="#" *ngIf="!note.editMode && note.showEditUpdateButton" (click)="onNoteDeleteClick(note._id)">Delete</a></div>  
+     <a href="#" *ngIf="!note.editMode && note.showEditUpdateButton" (click)="onNoteDeleteClick(note._id)">Delete</a></div>   -->
    </li>
-  </ul>
-  <!--<ul class="noteul" *ngIf="project.notes && project.notes != 0">
-  <li class="noteli" *ngFor="let note of project.notes">
-    <a href="#">
-      <h2>{{note.name}}</h2>
-      <p>{{note.note}}</p>
-    </a>
-  </li> 
-  </ul>-->
+  </ul>  
 </div>
 <div *ngIf="!project">
   No Project found
@@ -33,4 +63,7 @@
   <textarea name="note" [(ngModel)]="note" type="text" rows="5" class="form-control"></textarea>
   </div>
   <input type="button" (click)="onAddingNote()" class="btn btn-primary" value="+ Note" />
+</div>
+      </div>
+    </div>
 </div>

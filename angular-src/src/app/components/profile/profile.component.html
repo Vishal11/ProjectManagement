@@ -1,7 +1,21 @@
-<div *ngIf="user">
+<div class="row">
+    <div class="col-md-12">
+      <div class="portlet light bordered">
+        <div class="portlet-title">
+            <div class="caption font-red-sunglo">
+                <i class="icon-settings font-red-sunglo"></i>
+                <span class="caption-subject bold uppercase"> Profile</span>
+            </div>
+        </div>
+        
+<div class="portlet-body" *ngIf="user">
   <h2 class="page-header">{{user.username}}</h2>
   <ul class="list-group">
     <li class="list-group-item">Username: {{user.username}}</li>
     <li class="list-group-item">Email: {{user.email}}</li>
   </ul>
 </div>
+      </div>
+    </div>
+</div>
+

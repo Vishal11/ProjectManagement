@@ -68,7 +68,7 @@ export class ProjectdetailComponent implements OnInit {
         this.projectService.deleteProjectNote(projectId,noteId).subscribe(data=>{
           if(data.success)
           {            
-            console.log("sdf");
+           
             let notes:any=[]=this.project.notes
             this.project.notes=[]
             for(let i=0;i<notes.length;i++){                

@@ -36,4 +36,13 @@ export class ProjectService {
     headers.append('Content-Type','application/json');
     return this.http.delete('project/note/delete/'+projectId+"/"+noteId,{headers:headers}).map(res=>res.json());
   }
+
+  deleteProject(projectId){
+    const headers=new Headers();
+    headers.append('Content-Type','application/json');
+    return this.http.delete('project/delete/'+projectId,{headers:headers}).map(res=>res.json());
+  }
+
+
+  
 }

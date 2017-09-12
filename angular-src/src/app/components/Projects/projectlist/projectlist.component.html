@@ -1,25 +1,43 @@
-<table class="table" *ngIf="projects && projects != 0">
-  <thead class="thead-inverse">
-    <tr>     
+<div class="row">
+  <div class="col-md-12">
+    <div class="portlet light portlet-fit bordered">
+      <div class="portlet-title">
+          <div class="caption">
+              <i class="icon-settings font-red"></i>
+              <span class="caption-subject font-red sbold uppercase">Projects</span>
+          </div>
+      </div>
+<div class="portlet-body">
+  <div class="dataTables_wrapper no-footer">
+    <div class="table-scrollable">
+<table class="table table-striped table-hover table-bordered dataTable no-footer" *ngIf="projects && projects != 0">
+  <thead>
+    <tr role="row">     
       <th>Name</th>
       <th>Client Name</th>
       <th>Users</th>
+      <th>Technologies</th>
       <th>Actions</th>
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let project of projects">
+    <tr *ngFor="let project of projects" role="row">
      <td>{{project.name}}</td>
       <td>{{project.clientname}}</td>
-      <td><div *ngFor="let user of project.users; let isLast=last">{{user.name}}{{isLast ? '':','}}</div></td>      
+      <td><div *ngFor="let user of project.users; let isLast=last">{{user.name}}{{isLast ? '':','}}</div></td>   
+      <td><div *ngFor="let tech of project.technologies; let isLast=last">{{tech}}{{isLast ? '':','}}</div></td>      
       <td>
-        <a [routerLink]="['./project-detail',project._id]">Detail</a>
-        <a [routerLink]="['./project-detail',project._id]">Edit</a>
-        <a [routerLink]="['./project-detail',project._id]">Delete</a>
+        <a class="edit" [routerLink]="['./project-detail',project._id]">Detail</a>
+        <a class="edit" *ngIf="authService.isUserAdmin()" [routerLink]="['./edit',project._id]">Edit</a>
+        <a class="edit" *ngIf="authService.isUserAdmin()" (click)="onProjectDelete(project._id)">Delete</a>
       </td>
     </tr>
    
   </tbody>
 </table>
-
-
+    </div>
+  </div>
+</div>  
+    </div>
+  </div>
+</div>

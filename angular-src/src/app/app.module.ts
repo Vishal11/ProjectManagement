@@ -22,7 +22,8 @@ import { ProjectService } from './services/project.service';
 import { UserService } from './services/user.service';
 import { Ng2TagsInputModule } from 'ng2-tagsinput';
 import { ProjectdetailComponent } from './components/projects/projectdetail/projectdetail.component';
-
+import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2-multiselect-dropdown';
+import {RlTagInputModule} from 'angular2-tag-input';
 
 const appRoutes:Routes=[
   {
@@ -40,6 +41,8 @@ const appRoutes:Routes=[
     path:'projects',component:ProjectlistComponent,canActivate:[AuthGuard]
   },{
     path:'projects/add',component:ProjectComponent,canActivate:[AuthGuard,AdminGuard]
+  },{
+    path:'projects/edit/:id',component:ProjectComponent,canActivate:[AuthGuard,AdminGuard]
   },{
     path:'projects/project-detail/:id',component:ProjectdetailComponent,canActivate:[AuthGuard]
   }
@@ -63,7 +66,9 @@ const appRoutes:Routes=[
     HttpModule,
     RouterModule.forRoot(appRoutes),
     FlashMessagesModule,
-    Ng2TagsInputModule
+    Ng2TagsInputModule,
+    AngularMultiSelectModule,
+    RlTagInputModule
   ],
   providers: [ValidateService,AuthService,AuthGuard,AdminGuard,{provide: LocationStrategy, useClass: HashLocationStrategy},ProjectService,UserService],
   bootstrap: [AppComponent]
