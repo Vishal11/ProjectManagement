@@ -299,3 +299,5 @@ var Datatable = function() {
     };
 
 };
+
+module.exports=Datatable();

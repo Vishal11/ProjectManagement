@@ -24,6 +24,7 @@ import { Ng2TagsInputModule } from 'ng2-tagsinput';
 import { ProjectdetailComponent } from './components/projects/projectdetail/projectdetail.component';
 import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2-multiselect-dropdown';
 import {RlTagInputModule} from 'angular2-tag-input';
+import {DataTableModule} from "angular2-datatable";
 
 const appRoutes:Routes=[
   {
@@ -68,7 +69,8 @@ const appRoutes:Routes=[
     FlashMessagesModule,
     Ng2TagsInputModule,
     AngularMultiSelectModule,
-    RlTagInputModule
+    RlTagInputModule,
+    DataTableModule
   ],
   providers: [ValidateService,AuthService,AuthGuard,AdminGuard,{provide: LocationStrategy, useClass: HashLocationStrategy},ProjectService,UserService],
   bootstrap: [AppComponent]
