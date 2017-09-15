@@ -10,7 +10,8 @@
 <div class="portlet-body">
   <div class="dataTables_wrapper no-footer">
     <div class="table-scrollable">
-<table class="table table-striped table-hover table-bordered dataTable no-footer" *ngIf="projects && projects != 0">
+
+<!-- <table class="table table-striped table-bordered table-hover table-checkable order-column" id="sample_1" *ngIf="projects && projects != 0">
   <thead>
     <tr role="row">     
       <th>Name</th>
@@ -34,6 +35,46 @@
     </tr>
    
   </tbody>
+</table> -->
+
+<table class="table table-striped" [mfData]="projects" #mf="mfDataTable" [mfRowsOnPage]="10">
+    <thead>
+    <tr>
+        <th>
+            <mfDefaultSorter by="name">Name</mfDefaultSorter>
+        </th>
+        <th>
+            <mfDefaultSorter by="clientname">Client Name</mfDefaultSorter>
+        </th>
+        <th>
+            <mfDefaultSorter by="users">Users</mfDefaultSorter>
+        </th>
+        <th>
+            <mfDefaultSorter by="technologies">Technologies</mfDefaultSorter>
+        </th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let item of mf.data">
+        <td><div>{{item.name}}</div></td>
+        <td><div>{{item.clientname}}</div></td>
+        <td><div *ngFor="let user of item.users; let isLast=last">{{user.name}}{{isLast ? '':','}}</div></td>   
+        <td><div *ngFor="let tech of item.technologies; let isLast=last">{{tech}}{{isLast ? '':','}}</div></td>      
+        <td>
+          <a class="edit" [routerLink]="['./project-detail',item._id]">Detail</a>
+          <a class="edit" *ngIf="authService.isUserAdmin()" [routerLink]="['./edit',item._id]">Edit</a>
+          <a class="edit" *ngIf="authService.isUserAdmin()" (click)="onProjectDelete(item._id)">Delete</a>
+        </td>
+    </tr>
+    </tbody>
+    <tfoot>
+    <tr>
+        <td colspan="4">
+            <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25]"></mfBootstrapPaginator>
+        </td>
+    </tr>
+    </tfoot>
 </table>
     </div>
   </div>
@@ -41,3 +82,4 @@
     </div>
   </div>
 </div>
+
