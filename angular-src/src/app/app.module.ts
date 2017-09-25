@@ -25,6 +25,9 @@ import { ProjectdetailComponent } from './components/projects/projectdetail/proj
 import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2-multiselect-dropdown';
 import {RlTagInputModule} from 'angular2-tag-input';
 import {DataTableModule} from "angular2-datatable";
+import { FileSelectDirective } from 'ng2-file-upload/ng2-file-upload';
+import { UploadDocNamePipe } from './pipes/uploadDocName.pipe';
+// import { ImageUploadModule } from 'angular2-image-upload';
 
 const appRoutes:Routes=[
   {
@@ -59,7 +62,9 @@ const appRoutes:Routes=[
     NavbarComponent,
     HomeComponent,    
     ProjectComponent, 
-    ProjectlistComponent, ProjectdetailComponent
+    ProjectlistComponent, ProjectdetailComponent,
+    FileSelectDirective,
+    UploadDocNamePipe
   ],
   imports: [
     BrowserModule,
@@ -70,7 +75,8 @@ const appRoutes:Routes=[
     Ng2TagsInputModule,
     AngularMultiSelectModule,
     RlTagInputModule,
-    DataTableModule
+    DataTableModule,
+    // ImageUploadModule.forRoot()
   ],
   providers: [ValidateService,AuthService,AuthGuard,AdminGuard,{provide: LocationStrategy, useClass: HashLocationStrategy},ProjectService,UserService],
   bootstrap: [AppComponent]
